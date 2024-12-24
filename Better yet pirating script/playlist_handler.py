@@ -13,7 +13,7 @@ class Playlists():
         return self.playlists
     
     def create_playlist(self, playlist_name):
-        if playlist_name in self.playlists or playlist_name.isspace():
+        if playlist_name in self.playlists or playlist_name.isspace() or playlist_name == "":
             print("Ts alr exist")
         else:
             self.playlists[playlist_name] = {}

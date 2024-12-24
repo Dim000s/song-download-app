@@ -49,10 +49,23 @@ if genre == "Song":
         index = result
         song_name = results[index]['song_name']
         album_name = results[index]['album_name']
-        artists = "| "
-        for artist in results[index]['artists']:
-            artists = artists + artist + " | "
-        search.button(f"{index}: {song_name} on {album_name} by {artists}", use_container_width=True)
+        artists = ', '.join(results[index]['artists'])
+        col1, col2, col3, col4 = search.columns([0.1, 0.4, 0.3, 0.2], vertical_alignment="center")
+        with col1:
+            st.write(index)
+        with col2:
+            st.markdown(f"""
+            <strong>{song_name}</strong>
+            <br>
+            <sup>{artists}</sup>
+            """, unsafe_allow_html=True)
+        with col3:
+            st.markdown(f"""
+        <sub>{album_name}</sub>
+        """, unsafe_allow_html=True)
+        with col4:
+            st.button("➕", key=f"add_song_{index}")
+            
 
 if genre == "Album":
     for result in results:
