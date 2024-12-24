@@ -33,10 +33,11 @@ class Playlists():
 
 
     def add_track(self, track, playlist):
-        tracklist = self.playlists[playlist]
-        tracklist[track['song_name']] = track
-        self.playlists[playlist] = tracklist
-        self.save_playlist()
+        if playlist in self.playlists and track['song_name'] not in self.playlists[playlist]:
+            tracklist = self.playlists[playlist]
+            tracklist[track['song_name']] = track
+            self.playlists[playlist] = tracklist
+            self.save_playlist()
     
     def save_playlist(self):
         json_dict = json.dumps(obj=self.playlists, indent=4)
