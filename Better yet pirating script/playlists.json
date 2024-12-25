@@ -1,20 +1,15 @@
 {
-    "1": {
-        "Blinding Lights": {
-            "song_name": "Blinding Lights",
-            "album_name": "After Hours",
-            "album_cover": "https://i.scdn.co/image/ab67616d0000b2738863bc11d2aa12b54f5aeb36",
+    "Abdullah": {
+        "Cold Hours": {
+            "song_name": "Cold Hours",
+            "album_name": "Cold Hours",
+            "album_cover": "https://i.scdn.co/image/ab67616d0000b27357b317e7744c2b16c2e51ed9",
             "artists": [
-                "The Weeknd"
-            ]
-        },
-        "Locked out of Heaven": {
-            "song_name": "Locked out of Heaven",
-            "album_name": "Unorthodox Jukebox",
-            "album_cover": "https://i.scdn.co/image/ab67616d0000b273926f43e7cce571e62720fd46",
-            "artists": [
-                "Bruno Mars"
+                "aleemrk",
+                "Umair"
             ]
         }
-    }
+    },
+    "Pop": {},
+    "Rap": {}
 }

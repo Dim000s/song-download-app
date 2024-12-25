@@ -39,6 +39,14 @@ class Playlists():
             self.playlists[playlist] = tracklist
             self.save_playlist()
     
+    def remove_track(self, song_name, playlist):
+        if playlist in self.playlists and song_name in self.playlists[playlist]:
+            new_tracklist = {}
+            for track_name in self.playlists[playlist]:
+                if not track_name == song_name:
+                    new_tracklist[track_name] = self.playlists[playlist][track_name]
+            self.playlists[playlist] = new_tracklist 
+    
     def save_playlist(self):
         json_dict = json.dumps(obj=self.playlists, indent=4)
         with open("playlists.json", 'w') as outfile:

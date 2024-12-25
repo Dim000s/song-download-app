@@ -27,6 +27,7 @@ if len(playlists_list.playlists) == 0:
 @st.dialog("Playlist Info")
 def open_playlist_info(playlist_name):
     playlist = playlists_list.playlists[playlist_name]
+    delete_button_list = {}
     for count, track in enumerate(playlist):
         col1, col2, col3, col4 = st.columns([0.1, 0.3, 0.3, 0.2])
         with col1:
@@ -42,7 +43,10 @@ def open_playlist_info(playlist_name):
             <sub>{playlist[track]['album_name']}</sub>
             """, unsafe_allow_html=True)
         with col4:
-            st.button("➖", key=f"button{count}")
+            delete_button_list[playlist[track]['song_name']] = st.button("➖", key=f"button{count}")
+    for track_name in delete_button_list:
+        if delete_button_list[track_name]:
+            playlists_list.remove_track(track_name, playlist_name)
     status_msg = "waiting..."
     can_download = [True, ""]
     downloading = False
