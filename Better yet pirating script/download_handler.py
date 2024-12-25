@@ -7,7 +7,7 @@ def get_track_ytlink(track_name):
   track_link = url + track_id
   return track_link
 
-def download_audio(link, path):
+def download_audio(link, path, track_name):
   ydl_options = {
   'extract_audio': True,
   'format': 'bestaudio/best',
@@ -22,6 +22,6 @@ def download_audio(link, path):
     with open("failed_downloads.txt", '+a') as f:
       print("failed type shi")
       f.write(path)
-    return f"Failed in downloading {path}"
+    return f"Failed in downloading {track_name}"
   else:
-    return f"Downloaded {path}"
+    return f"Downloaded {track_name}"

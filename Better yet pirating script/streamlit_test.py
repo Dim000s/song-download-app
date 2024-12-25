@@ -1,6 +1,9 @@
 import streamlit as st
 import streamlit_funcs
 import playlist_handler
+import download_handler
+import os
+import set_metadata
 
 with open('style.css') as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -23,8 +26,6 @@ if len(playlists_list.playlists) == 0:
 
 @st.dialog("Playlist Info")
 def open_playlist_info(playlist_name):
-    status_msg = "waiting..."
-    can_download = [True, ""]
     playlist = playlists_list.playlists[playlist_name]
     for count, track in enumerate(playlist):
         col1, col2, col3, col4 = st.columns([0.1, 0.3, 0.3, 0.2])
@@ -42,7 +43,37 @@ def open_playlist_info(playlist_name):
             """, unsafe_allow_html=True)
         with col4:
             st.button("➖", key=f"button{count}")
-    download_button = st.button("Download")
+    status_msg = "waiting..."
+    can_download = [True, ""]
+    downloading = False
+    download_button = st.button("Download", key="download")
+    track_to_download = 0
+    list_tracks = []
+    for track_name in playlist:
+        track = playlist[track_name]
+        list_tracks.append(track)
+    if download_button:
+        downloading = True
+    if downloading:
+        for track in list_tracks:
+            if can_download[0]:
+                track_details = list_tracks[track_to_download]
+                path = os.path.join("Downloads", track_details["song_name"])
+                search_term = track_details["song_name"] + track_details["album_name"] + track_details["artists"][0]
+                yt_link = download_handler.get_track_ytlink(search_term)
+                status_msg = f"Downloading {track_details["song_name"]}"
+                st.write(f"{status_msg} : {track_to_download + 1} of {len(list_tracks)}")
+                status_msg = download_handler.download_audio(yt_link, path, track_details["song_name"])  
+                audio_file = os.path.join("Downloads", f"{track_details["song_name"]}.mp3")
+                set_metadata.set_album_cover(audio_file, track_details["album_cover"])
+                set_metadata.set_other_fields(audio_file, track_details["song_name"], track_details["artists"], track_details["album_name"])
+                st.write(f"{status_msg} : {track_to_download + 1} of {len(list_tracks)}")
+            if (track_to_download+1) == len(list_tracks):
+                status_msg = f"Downloaded {len(list_tracks)} songs from Mood"
+                break
+            else:
+                track_to_download += 1
+        st.write(status_msg)
     
 
 for i in range(len(playlists_button_dict)):
@@ -101,6 +132,8 @@ if genre == "Song":
             with st.popover("➕"):
                 playlist_to_add = st.text_input("Enter name of playlist:", key=f"text{index}")
                 playlists_list.add_track(track=results[index], playlist=playlist_to_add)
+                if not playlist_to_add == "":
+                    playlist_to_add = ""
 
             
 if genre == "Album":
